@@ -1,29 +1,24 @@
-#fstab file by lopestom for Cricket Dream EC211001_109H - 0CN0_1_09H
-#
-# mount point    fstype  device                             device2                flags
-
-# Dynamic partition
-/system		        ext4	/dev/block/mapper/system              flags=backup=1;wipeingui;slotselect;logical;display="System_root"
-/vendor             ext4    /dev/block/mapper/vendor             flags=backup=1;wipeingui;logical;display="Vendor_a";slotselect
-/product            ext4    /dev/block/mapper/product             flags=backup=1;wipeingui;logical;display="Product_a";slotselect
+# Dynamic partitions
+/system		        ext4	/dev/block/mapper/system              flags=backup=1;wipeingui;logical;display="System";slotselect
+/vendor             ext4    /dev/block/mapper/vendor             flags=backup=1;wipeingui;logical;display="Vendor";slotselect
+/product            ext4    /dev/block/mapper/product             flags=backup=1;wipeingui;logical;display="Product";slotselect
 
 # Images
-/system_image	    emmc  	/dev/block/mapper/system_a            flags=backup=1;flashimg=1;slotselect;logical;display="System Image_a"
-/vendor_image	    emmc  	/dev/block/mapper/vendor_a             flags=backup=1;flashimg=1;slotselect;logical;display="Vendor Image_a"
-/product_image	    emmc	/dev/block/mapper/product_a             flags=backup=1;flashimg=1;slotselect;logical;display="Product Image_a"
+/system_image	    emmc  	/dev/block/mapper/system            flags=backup=1;flashimg=1;slotselect;logical;display="System Image"
+/vendor_image	    emmc  	/dev/block/mapper/vendor             flags=backup=1;flashimg=1;slotselect;logical;display="Vendor Image"
+/product_image	    emmc	/dev/block/mapper/product             flags=backup=1;flashimg=1;slotselect;logical;display="Product Image"
 
 # Core Partitions
 #/metadata             ext4    /dev/block/by-name/md_udc         flags=backup=1;display="metadata"
 #/md_udc		    emmc	/dev/block/by-name/md_udc   flags=backup=1
-/metadata	    emmc	/dev/block/by-name/metadata flags=backup=1
+/metadata	    ext4	/dev/block/by-name/metadata 
 
 # Common partition
-/data            f2fs    /dev/block/by-name/userdata           flags=fileencryption=aes-256-xts:aes-256-cts:v2,keydirectory=/metadata/vold/metadata_encryption,fsverity
-#/data            f2fs    /dev/block/by-name/userdata           flags=fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,keydirectory=/metadata/vold/metadata_encryption,fsverity
-#/data            ext4    /dev/block/by-name/userdata            flags=fileencryption=aes-256-xts:aes-256-cts:v2,keydirectory=/metadata/vold/metadata_encryption,fsverity
-/vendor_boot	emmc	/dev/block/by-name/vendor_boot		 flags=display="Vendor Boot";backup=1;flashimg=1;slotselect
+#/data            f2fs    /dev/block/by-name/userdata           flags=display="Data"
+/data            f2fs    /dev/block/by-name/userdata           flags=display="Data";fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,keydirectory=/metadata/vold/metadata_encryption,fsverity
+/vendor_boot	emmc	/dev/block/by-name/vendor_boot		 
 /boot            emmc    /dev/block/by-name/boot               flags=backup=1;display="Boot";flashimg=1;slotselect
-/dtbo            emmc    /dev/block/by-name/dtbo               flags=backup=1;display="Dtbo";flashimg=1;slotselect
+/dtbo            emmc    /dev/block/by-name/dtbo               
 /persist         ext4    /dev/block/by-name/persist            flags=backup=1;display="Persist";mounttodecrypt
 /persist_image   emmc    /dev/block/by-name/persist            flags=backup=1;display="Persist Image";flashimg=1
 /vbmeta		    emmc	/dev/block/by-name/vbmeta           flags=display="vbmeta";backup=1;flashimg=1;slotselect
@@ -31,7 +26,7 @@
 /vbmeta_vendor   emmc    /dev/block/by-name/vbmeta_vendor      flags=backup=1;display="vbmeta_vendor";flashimg=1;slotselect
 
 # MediaTek partitions
-/bootloader         emmc        /dev/block/by-name/lk                 flags=backup=1;display="Bootloader (lk)";flashimg=1;slotselect
+/bootloader         emmc        /dev/block/by-name/lk                 
 /logo		    emmc	/dev/block/by-name/logo             flags=display="logo";backup=1;flashimg=1
 /misc               emmc        /dev/block/by-name/misc
 /expdb		    emmc	/dev/block/by-name/expdb             flags=display="expdb";backup=1
@@ -68,8 +63,8 @@
 /scp		    emmc	/dev/block/by-name/scp             flags=display="scp";backup=1;slotselect
 
 #Mod lopestom about encrypt_decrypt data
-#/oemkeystore		emmc	/dev/block/by-name/oemkeystore
-#/keystore		emmc	/dev/block/by-name/keystore
+/oemkeystore		emmc	/dev/block/by-name/oemkeystore
+/keystore		emmc	/dev/block/by-name/keystore
 
 # Other partitions
 /otp            emmc    /dev/block/by-name/otp               flags=display="otp";backup=1
@@ -81,5 +76,5 @@
 /mcupm         emmc       /dev/block/by-name/mcupm           flags=display="mcupm";backup=1;slotselect
 
 # External-Devices (SDCARD | OTG)
-/external_sd    auto     /dev/block/mmcblk1p1  /dev/block/mmcblk1            flags=display="External_SDcard";storage;wipeingui;removable;fsflags="utf8"
-/usbotg        auto     /dev/block/mmcblk1p2  /dev/block/mmcblk1p2                     flags=display="Usb_Otg";storage;wipeingui;removable;fsflags="utf8"
+/external_sd    auto     /dev/block/mmcblk1p1  /dev/block/mmcblk1            flags=display="display="Micro-SDcard";storage;wipeingui;removable;fsflags="utf8"
+/usbotg        auto     /dev/block/mmcblk1p2  /dev/block/mmcblk1p2                     flags=display="USB-OTG";storage;wipeingui;removable;fsflags="utf8"
