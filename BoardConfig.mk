@@ -1,4 +1,9 @@
-
+#
+# Copyright (C) 2020 The Android Open Source Project
+# Copyright (C) 2020 The TWRP Open Source Project
+# Copyright (C) 2020 SebaUbuntu's TWRP device tree generator
+# Copyright (C) 2019-Present A-Team Digital Solutions
+#
 
 DEVICE_PATH := device/cricket/Dream5G
 
@@ -14,13 +19,44 @@ TARGET_2ND_ARCH_VARIANT := armv7-a-neon
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
+
 TARGET_BOARD_SUFFIX := _64
 TARGET_USES_64_BIT_BINDER := true
+#TARGET_NO_BOOTLOADER := true
+TARGET_SUPPORTS_64_BIT_APPS := true
+
+# Build Flags
+TW_MAINTAINER := PizzaG
+TW_DEVICE_VERSION := Cricket Dream 5G
+RECOVERY_VARIANT := TWRP_11
+ALLOW_MISSING_DEPENDENCIES := true
+LC_ALL := "C"
+
+# Decryption
+#PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
+BOARD_USES_METADATA_PARTITION := true
+
+# Additional binaries & libraries needed for recovery
+TARGET_RECOVERY_DEVICE_MODULES += \
+    libkeymaster4 \
+    libpuresoftkeymasterdevice
+
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so
+
+# Decryption & Anti Rollback
+PLATFORM_SECURITY_PATCH := 2099-12-31
+VENDOR_SECURITY_PATCH := 2099-12-31
+PLATFORM_VERSION := 16.1.0
 
 # File systems
 BOARD_HAS_LARGE_FILESYSTEM := true
-#BOARD_RECOVERYIMAGE_PARTITION_SIZE := 41943040 # This is the maximum known partition size, but it can be higher, so we just omit it
-BOARD_BOOTIMAGE_PARTITION_SIZE := 41943040 # This is the maximum known partition size, but it can be higher, so we just omit it
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 41943040
+BOARD_BOOTIMAGE_PARTITION_SIZE := 41943040
 BOARD_SYSTEMIMAGE_PARTITION_TYPE := ext4
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
@@ -28,32 +64,11 @@ TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 TARGET_COPY_OUT_VENDOR := vendor
 BOARD_USES_RECOVERY_AS_BOOT := true
-BOARD_ROOT_EXTRA_FOLDERS += metadata
-TARGET_NO_RECOVERY := true
-TW_HAS_NO_RECOVERY_PARTITION := true
-
-
-# TWRP Installer
-RECOVERY_INSTALLER_PATH := bootable/recovery/installer
-USE_RECOVERY_INSTALLER := true
-
-# A/B
-AB_OTA_UPDATER := true
-TW_INCLUDE_REPACKTOOLS := true
-
-# A/B
-AB_OTA_PARTITIONS += \
-    boot \
-    dtbo \
-    lk \
-    preloader \
-    product \
-    system \
-    vbmeta \
-    vbmeta_system \
-    vbmeta_vendor \
-    vendor \
-    vendor_boot
+#BOARD_ROOT_EXTRA_FOLDERS += metadata
+#TARGET_NO_RECOVERY := true
+#BOARD_SUPPRESS_SECURE_ERASE := true
+#BOARD_ROOT_EXTRA_SYMLINKS := \
+    /mnt/vendor/persist:/persist
 
 # Kernel
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.force_normal_boot=1 androidboot.selinux=permissive twrpfastboot=1 buildvariant=eng
@@ -77,69 +92,40 @@ TARGET_KERNEL_CONFIG := Dream5G_defconfig
 
 # Platform
 TARGET_BOARD_PLATFORM := mt6833
-#TARGET_USES_UEFI := true
-
-# These two are for MTK Chipsets only
 BOARD_USES_MTK_HARDWARE := true
 BOARD_HAS_MTK_HARDWARE := true
+#TARGET_USES_UEFI := true
 
-# Crypto
-PLATFORM_SECURITY_PATCH := 2025-12-31
-VENDOR_SECURITY_PATCH := 2025-12-31
-PLATFORM_VERSION := 11
-TW_INCLUDE_CRYPTO := false
-TW_INCLUDE_CRYPTO_FBE := false
-TW_INCLUDE_FBE_METADATA_DECRYPT := true
-BOARD_USES_METADATA_PARTITION := true
-
-# Recovery
-TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
-
-# Hack: prevent anti rollback
-PLATFORM_SECURITY_PATCH := 2099-12-31
-VENDOR_SECURITY_PATCH := 2099-12-31
-PLATFORM_VERSION := 16.1.0
+# System props
+TARGET_SYSTEM_PROP := $(DEVICE_PATH)/system.prop
 
 # TWRP Configuration
+TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TW_THEME := portrait_hdpi
-TW_EXTRA_LANGUAGES := true
+#TW_EXTRA_LANGUAGES := true
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_USE_TOOLBOX := true
 TW_EXCLUDE_TWRPAPP := true
-TW_NO_TWRPAPP := true
-TWRP_INCLUDE_LOGCAT := true
-TARGET_USES_LOGD := true
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_INCLUDE_REPACKTOOLS := true
 TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
-TW_INCLUDE_RESETPROP := true
+#TW_INCLUDE_RESETPROP := true
 TW_NO_SCREEN_TIMEOUT := true
+#TW_HAS_NO_RECOVERY_PARTITION := true
+#TW_EXCLUDE_APEX := true
 
+# TWRP Debug Flags
+TARGET_USES_LOGD := true
+TWRP_EVENT_LOGGING := false
+TWRP_INCLUDE_LOGCAT := true
+TARGET_RECOVERY_DEVICE_MODULES += debuggerd
+TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_OUT_EXECUTABLES)/debuggerd
 
+# TWRP Installer
+RECOVERY_INSTALLER_PATH := bootable/recovery/installer
+USE_RECOVERY_INSTALLER := true
 
-# Build Flags
-TW_MAINTAINER := PizzaG
-TW_DEVICE_VERSION := Cricket Dream 5G
-RECOVERY_VARIANT := TWRP_11
-ALLOW_MISSING_DEPENDENCIES := true
-LC_ALL := "C"
-
-
-# Crypto
-#PLATFORM_SECURITY_PATCH := 2099-12-31
-#VENDOR_SECURITY_PATCH := 2099-12-31
-#PLATFORM_VERSION := 11.0.0
-#PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
-#TW_INCLUDE_CRYPTO := true
-#TW_INCLUDE_CRYPTO_FBE := true
-#TW_INCLUDE_FBE_METADATA_DECRYPT := true
-
-# Additional binaries & libraries needed for recovery
-TARGET_RECOVERY_DEVICE_MODULES += \
-    libkeymaster4 \
-    libpuresoftkeymasterdevice
-
-TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so
+# TWRP Ramdisk Compression
+#BOARD_RAMDISK_USE_LZMA := true
+#LZMA_RAMDISK_TARGETS := boot,recovery
