@@ -13,6 +13,16 @@ PRODUCT_SHIPPING_API_LEVEL := 30
 # Dynamic
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
+# Virtual A/B
+ENABLE_VIRTUAL_AB := true
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
+
+# VNDK
+PRODUCT_TARGET_VNDK_VERSION := 30
+
+# Installs gsi keys into ramdisk, to boot a developer GSI with verified boot.
+$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
+
 # Generic Stuff
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/embedded.mk)
