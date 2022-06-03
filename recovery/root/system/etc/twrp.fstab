@@ -16,6 +16,8 @@
 # Common partition
 #/data            f2fs    /dev/block/by-name/userdata           flags=display="Data"
 /data            f2fs    /dev/block/by-name/userdata           flags=display="Data";fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,keydirectory=/metadata/vold/metadata_encryption,fsverity
+
+
 /vendor_boot	emmc	/dev/block/by-name/vendor_boot		 
 /boot            emmc    /dev/block/by-name/boot               flags=backup=1;display="Boot";flashimg=1;slotselect
 /dtbo            emmc    /dev/block/by-name/dtbo               
@@ -63,8 +65,8 @@
 /scp		    emmc	/dev/block/by-name/scp             flags=display="scp";backup=1;slotselect
 
 #Mod lopestom about encrypt_decrypt data
-/oemkeystore		emmc	/dev/block/by-name/oemkeystore
-/keystore		emmc	/dev/block/by-name/keystore
+#/oemkeystore		emmc	/dev/block/by-name/oemkeystore
+#/keystore		emmc	/dev/block/by-name/keystore
 
 # Other partitions
 /otp            emmc    /dev/block/by-name/otp               flags=display="otp";backup=1
@@ -76,5 +78,5 @@
 /mcupm         emmc       /dev/block/by-name/mcupm           flags=display="mcupm";backup=1;slotselect
 
 # External-Devices (SDCARD | OTG)
-/external_sd    auto     /dev/block/mmcblk1p1  /dev/block/mmcblk1            flags=display="display="Micro-SDcard";storage;wipeingui;removable;fsflags="utf8"
+/external_sd    auto     /dev/block/mmcblk1p1  /dev/block/mmcblk1            flags=display="Micro-SDcard";storage;wipeingui;removable;fsflags="utf8"
 /usbotg        auto     /dev/block/mmcblk1p2  /dev/block/mmcblk1p2                     flags=display="USB-OTG";storage;wipeingui;removable;fsflags="utf8"
