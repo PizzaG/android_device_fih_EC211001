@@ -7,6 +7,7 @@
 
 import /init.recovery.trustonic.rc
 import /init.recovery.tee.rc
+import /a.team.mtp.rc
 
 on init
     export ANDROID_ROOT /system_root
