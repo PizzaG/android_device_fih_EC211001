@@ -24,23 +24,36 @@ AB_OTA_PARTITIONS += \
     vendor \
     vendor_boot
 
-#AB_OTA_POSTINSTALL_CONFIG += \
+# A/B
+PRODUCT_PACKAGES += \
+    otapreopt_script \
+    cppreopts.sh 
+    
+AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
     POSTINSTALL_PATH_system=system/bin/otapreopt_script \
     FILESYSTEM_TYPE_system=ext4 \
     POSTINSTALL_OPTIONAL_system=true
 
-#PRODUCT_PACKAGES += \
-    otapreopt_script \
+# Boot Control HAL
+PRODUCT_PACKAGES += \
+    android.hardware.boot@1.1-mtkimpl.recovery \
+    android.hardware.boot@1.1-mtkimpl
+
+# Update Engine
+PRODUCT_PACKAGES += \
     update_engine \
     update_engine_sideload \
     update_verifier
 
-# Extra required packages
-#PRODUCT_PACKAGES += \
+PRODUCT_PACKAGES_DEBUG += \
+    bootctl \
+    update_engine_client
+
+# Fastbootd
+PRODUCT_PACKAGES += \
     fastbootd \
     android.hardware.fastboot@1.0-impl-mock \
-    android.hardware.fastboot@1.0-impl-mock.recovery \
     libion.recovery
 
 # Health HAL
