@@ -1,2 +1,2 @@
-# android_device_fih_EC211001
+# SkyHawk_11 Custom Recovery
 Cricket Dream 5G
