@@ -1,66 +1,55 @@
-#
-# Copyright (C) 2020 The Android Open Source Project
-# Copyright (C) 2020 The TWRP Open Source Project
-# Copyright (C) 2020 SebaUbuntu's TWRP device tree generator
-# Copyright (C) 2019-Present A-Team Digital Solutions
-#
+LOCAL_PATH := device/fih/EC211001
 
-LOCAL_PATH := device/cricket/Dream5G
+# Dynamic Partitions
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
-# A/B
-AB_OTA_UPDATER := true
+# Shipping VNDK
+PRODUCT_TARGET_VNDK_VERSION := 30
 
-# A/B
-AB_OTA_PARTITIONS += \
-    boot \
-    dtbo \
-    lk \
-    preloader \
-    product \
-    system \
-    vbmeta \
-    vbmeta_system \
-    vbmeta_vendor \
-    vendor \
-    vendor_boot
+# Shipping API level
+PRODUCT_SHIPPING_API_LEVEL := 30
+
+PRODUCT_PLATFORM := mt6833
 
 # A/B
-PRODUCT_PACKAGES += \
-    otapreopt_script \
-    cppreopts.sh 
-    
+ENABLE_VIRTUAL_AB := true
+
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
     POSTINSTALL_PATH_system=system/bin/otapreopt_script \
     FILESYSTEM_TYPE_system=ext4 \
     POSTINSTALL_OPTIONAL_system=true
 
-# Boot Control HAL
+# Boot control HAL
 PRODUCT_PACKAGES += \
-    android.hardware.boot@1.1-mtkimpl.recovery \
-    android.hardware.boot@1.1-mtkimpl
-
-# Update Engine
-PRODUCT_PACKAGES += \
-    update_engine \
-    update_engine_sideload \
-    update_verifier
+    android.hardware.boot@1.1-impl-recovery \
+    android.hardware.boot@1.1-impl \
+    android.hardware.boot@1.1-service
 
 PRODUCT_PACKAGES_DEBUG += \
-    bootctl \
     update_engine_client
 
-# Fastbootd
 PRODUCT_PACKAGES += \
-    fastbootd \
+    otapreopt_script \
+    update_engine \
+    update_verifier \
+    update_engine_sideload
+    
+# Fastbootd stuff
+PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.0-impl-mock \
-    libion.recovery
+    android.hardware.fastboot@1.0-impl-mock.recovery \
+    fastbootd
 
-# Health HAL
+# health Hal
 PRODUCT_PACKAGES += \
+    android.hardware.health@2.1-impl \
     android.hardware.health@2.1-service \
-    android.hardware.health@2.1-impl
 
-# Mtk Vibration
-PRODUCT_PACKAGES += \
-	android.hardware.vibrator@1.3-service.mtk.recovery
+TW_OVERRIDE_SYSTEM_PROPS := \
+    "ro.build.product;ro.build.fingerprint;ro.build.version.incremental;ro.product.device=ro.product.system.device;ro.product.model=ro.product.system.model;ro.product.name=ro.product.system.name"
+
+#
+
+
+## Always mention credits to anyone who helped you! ##
