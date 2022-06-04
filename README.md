@@ -16,6 +16,6 @@ xda threads: [Development for the Cricket Dream 5G](https://forum.xda-developers
 --------------------------------
 TWRP Pictures
 -------------
-![Initial Menu](cccc)
+
 ----------------------------------------
 
